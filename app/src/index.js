@@ -17,7 +17,12 @@ const App = {
         starNotaryArtifact.abi,
         deployedNetwork.address,
       );
-
+      //  display in the header section name and symbol of the token 
+      const name = await this.meta.methods.name().call();
+      const token = await this.meta.methods.symbol().call();
+      const tokenName = document.getElementById("tokenName");
+      tokenName.innerHTML = `${name} - ${token}`;
+      
       // get accounts
       const accounts = await web3.eth.getAccounts();
       this.account = accounts[0];
@@ -39,7 +44,6 @@ const App = {
     App.setStatus("New Star Owner is " + this.account + ".");
   },
 
-  // Implement Task 4 Modify the front end of the DAPP
   lookUp: async function (){
     
   }

@@ -1,10 +1,10 @@
 pragma solidity >=0.4.24;
 
 //Importing openzeppelin-solidity ERC-721 implemented Standard
-import "../app/node_modules/openzeppelin-solidity/contracts/token/ERC721/ERC721.sol";
+import "../app/node_modules/openzeppelin-solidity/contracts/token/ERC721/ERC721Full.sol";
 
 // StarNotary Contract declaration inheritance the ERC721 openzeppelin implementation
-contract StarNotary is ERC721 {
+contract StarNotary is ERC721Full {
 
     // Star data
     struct Star {
@@ -21,6 +21,8 @@ contract StarNotary is ERC721 {
     // mapping the TokenId and price
     mapping(uint256 => uint256) public starsForSale;
 
+
+    constructor() ERC721Full("StarToken", "STK") public {}
     
     // Create Star using the Struct
     function createStar(string memory _name, uint256 _tokenId) public { // Passing the name and tokenId as a parameters
@@ -41,6 +43,7 @@ contract StarNotary is ERC721 {
         return address(uint160(x));
     }
 
+    // Function that allows to buy a star from another owner
     function buyStar(uint256 _tokenId) public  payable {
         require(starsForSale[_tokenId] > 0, "The Star should be up for sale");
         uint256 starCost = starsForSale[_tokenId];
@@ -54,9 +57,11 @@ contract StarNotary is ERC721 {
         }
     }
 
-    // Implement Task 1 lookUptokenIdToStarInfo
+    // Function that returns the name of the Id Star.
     function lookUptokenIdToStarInfo (uint _tokenId) public view returns (string memory) {
-        //1. You should return the Star saved in tokenIdToStarInfo mapping
+        require(tokenIdToStarInfo[_tokenId].name > 0, "No stars are linked to this Id!");
+        // Return the name of th Star saved in tokenIdToStarInfo mapping
+        return tokenIdToStarInfo[_tokenId].name;
     }
 
     // Implement Task 1 Exchange Stars function
