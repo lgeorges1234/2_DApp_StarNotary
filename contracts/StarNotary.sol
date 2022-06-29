@@ -10,10 +10,6 @@ contract StarNotary is ERC721Full {
     struct Star {
         string name;
     }
-
-    // Implement Task 1 Add a name and symbol properties
-    // name: Is a short name to your token
-    // symbol: Is a short string like 'USD' -> 'American Dollar'
     
 
     // mapping the Star with the Owner Address
@@ -59,7 +55,7 @@ contract StarNotary is ERC721Full {
 
     // Function that returns the name of the Id Star.
     function lookUptokenIdToStarInfo (uint _tokenId) public view returns (string memory) {
-        require(tokenIdToStarInfo[_tokenId].name > 0, "No stars are linked to this Id!");
+        // require(tokenIdToStarInfo[_tokenId] > 0, "No stars are linked to this Id!");
         // Return the name of th Star saved in tokenIdToStarInfo mapping
         return tokenIdToStarInfo[_tokenId].name;
     }
