@@ -79,7 +79,9 @@ it('can add the star name and star symbol properly', async() => {
     let instance = await StarNotary.deployed();
     await instance.createStar("Awesome Star!", 6, { from: accounts[0] });
     const tokenName = await instance.name.call();
+    const tokenSymbol = await instance.symbol.call();
     assert.equal(tokenName, 'StarToken');
+    assert.equal(tokenSymbol, 'STK');
 });
 
 it('lets 2 users exchange stars', async() => {
@@ -91,7 +93,9 @@ it('lets 2 users exchange stars', async() => {
     await instance.exchangeStars(7, 8, { from: accounts[0]});
     // 3. Verify that the owners changed
     const star7Owner = await instance.ownerOf.call(7);
+    const star8Owner = await instance.ownerOf.call(8);
     assert.equal(star7Owner, accounts[1]);
+    assert.equal(star8Owner, accounts[0]);
 });
 
 it('lets a user transfer a star', async() => {
