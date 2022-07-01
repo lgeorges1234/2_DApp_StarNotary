@@ -79,7 +79,6 @@ it('can add the star name and star symbol properly', async() => {
     let instance = await StarNotary.deployed();
     await instance.createStar("Awesome Star!", 6, { from: accounts[0] });
     const tokenName = await instance.name.call();
-    console.log(tokenName);
     assert.equal(tokenName, 'StarToken');
 });
 
@@ -92,27 +91,28 @@ it('lets 2 users exchange stars', async() => {
     await instance.exchangeStars(7, 8, { from: accounts[0]});
     // 3. Verify that the owners changed
     const star7Owner = await instance.ownerOf.call(7);
-    console.log(star7Owner);
-    console.log(accounts[1]);
     assert.equal(star7Owner, accounts[1]);
 });
 
 it('lets a user transfer a star', async() => {
     // 1. create a Star with different tokenId
+    let instance = await StarNotary.deployed();
+    await instance.createStar('star 9', 9, {from: accounts[0]});
     // 2. use the transferStar function implemented in the Smart Contract
+    await instance.transferStar(accounts[1], 9);
     // 3. Verify the star owner changed.
+    const star9Owner = await instance.ownerOf.call(9);
+    assert.equal(star9Owner, accounts[1]);
 });
 
 it('lookUptokenIdToStarInfo test', async() => {
     // 1. create a Star with different tokenId
     let instance = await StarNotary.deployed();
-    // const starName = 'starToLookUp';
     const user1 = accounts[1];
     const starId = 10;
     await instance.createStar('starToLookUp', starId, {from: user1});
     // 2. Call your method lookUptokenIdToStarInfo
     const starInfo = await instance.lookUptokenIdToStarInfo(starId);
     // 3. Verify if you Star name is the same
-    console.log(starInfo);
     assert.equal(starInfo, 'starToLookUp');
 });

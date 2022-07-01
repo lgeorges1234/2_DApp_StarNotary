@@ -41,10 +41,10 @@ contract StarNotary is ERC721Full {
 
     // Function that allows to buy a star from another owner
     function buyStar(uint256 _tokenId) public  payable {
-        require(starsForSale[_tokenId] > 0, "The Star should be up for sale");
+        require(starsForSale[_tokenId] > 0, "The Star should be up for sale!");
         uint256 starCost = starsForSale[_tokenId];
         address ownerAddress = ownerOf(_tokenId);
-        require(msg.value > starCost, "You need to have enough Ether");
+        require(msg.value > starCost, "You need to have enough Ether!");
         _transferFrom(ownerAddress, msg.sender, _tokenId); // We can't use _addTokenTo or_removeTokenFrom functions, now we have to use _transferFrom
         address payable ownerAddressPayable = _make_payable(ownerAddress); // We need to make this conversion to be able to use transfer() function to transfer ethers
         ownerAddressPayable.transfer(starCost);
@@ -66,7 +66,7 @@ contract StarNotary is ERC721Full {
         address user1 = ownerOf(_tokenId1);
         address user2 = ownerOf(_tokenId2);
         // check if the owner of _tokenId1 or _tokenId2 is the sender
-        require((user1 == msg.sender || user2 == msg.sender), "You are not the owner"); 
+        require((user1 == msg.sender || user2 == msg.sender), "You are not the owner!"); 
         //4. Use _transferFrom function to exchange the tokens.
         _transferFrom(user1, user2, _tokenId1);
         _transferFrom(user2, user1, _tokenId2);
@@ -75,7 +75,9 @@ contract StarNotary is ERC721Full {
     // Implement Task 1 Transfer Stars
     function transferStar(address _to1, uint256 _tokenId) public {
         //1. Check if the sender is the ownerOf(_tokenId)
+        require(ownerOf(_tokenId) == msg.sender, "You are not the owner!");
         //2. Use the transferFrom(from, to, tokenId); function to transfer the Star
+        transferFrom(msg.sender, _to1, _tokenId);
     }
 
 }
