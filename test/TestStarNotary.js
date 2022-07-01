@@ -1,11 +1,10 @@
-import { assert } from "console";
+// import { assert } from "console";
+const { assert } = require('console')
 
 const StarNotary = artifacts.require("StarNotary");
 
 var accounts;
 var owner;
-// const tokenName = "StarToken";
-// const tokenSymbol = "STK";
 
 contract('StarNotary', (accs) => {
     accounts = accs;
@@ -77,9 +76,13 @@ it('lets user2 buy a star and decreases its balance in ether', async() => {
     assert.equal(value, starPrice);
 });
 
+// Implement Task 2 Add supporting unit tests
 
 it('can add the star name and star symbol properly', async() => {
-
+    let instance = await StarNotary.deployed();
+    await instance.createStar("Awesome Star!", 6, { from: accounts[0] });
+    const tokenName = await instance.name.call();
+    console.log(tokenName);
 });
 
 it('lets 2 users exchange stars', async() => {
@@ -96,6 +99,13 @@ it('lets a user transfer a star', async() => {
 
 it('lookUptokenIdToStarInfo test', async() => {
     // 1. create a Star with different tokenId
+    let instance = await StarNotary.deployed();
+    // const starName = 'starToLookUp';
+    const user1 = accounts[1];
+    const starId = 6;
+    await instance.createStar('starToLookUp', starId, {from: user1});
     // 2. Call your method lookUptokenIdToStarInfo
+    const starInfo = await lookUptokenIdToStarInfo(starId);
     // 3. Verify if you Star name is the same
+    assert.equal(starInfo, starName);
 });

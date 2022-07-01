@@ -55,7 +55,7 @@ contract StarNotary is ERC721Full {
 
     // Function that returns the name of the Id Star.
     function lookUptokenIdToStarInfo (uint _tokenId) public view returns (string memory) {
-        // require(tokenIdToStarInfo[_tokenId] > 0, "No stars are linked to this Id!");
+        require(bytes(tokenIdToStarInfo[_tokenId].name).length > 0, "No stars are linked to this Id!");
         // Return the name of th Star saved in tokenIdToStarInfo mapping
         return tokenIdToStarInfo[_tokenId].name;
     }
