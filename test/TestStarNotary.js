@@ -79,6 +79,7 @@ it('can add the star name and star symbol properly', async() => {
     let instance = await StarNotary.deployed();
     await instance.createStar("Awesome Star!", 6, { from: accounts[0] });
     const tokenName = await instance.name.call();
+    console.log(tokenName);
     assert.equal(tokenName, 'StarToken');
 });
 
@@ -96,6 +97,14 @@ it('lets a user transfer a star', async() => {
 
 it('lookUptokenIdToStarInfo test', async() => {
     // 1. create a Star with different tokenId
+    let instance = await StarNotary.deployed();
+    // const starName = 'starToLookUp';
+    const user1 = accounts[1];
+    const starId = 10;
+    await instance.createStar('starToLookUp', starId, {from: user1});
     // 2. Call your method lookUptokenIdToStarInfo
+    const starInfo = await instance.lookUptokenIdToStarInfo(starId);
     // 3. Verify if you Star name is the same
+    console.log(starInfo);
+    assert.equal(starInfo, 'starToLookUp');
 });
